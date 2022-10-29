@@ -1,0 +1,29 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
+   "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+   
+   <mapper namespace="com.spring.main.dao.JoinDAO">
+    
+   		<insert id="join" parameterType="com.spring.main.dto.JoinDTO">
+   			INSERT INTO my_member(mb_id,mb_pw,mb_email,mb_name,mb_gender,mb_sido,mb_sigungu,mb_postcode,mb_addr_default,mb_addr_detail)
+   				VALUES(#{mb_id},#{mb_pw},#{mb_email},#{mb_name},#{mb_gender},
+   				<choose>
+				<when test="mb_sido.equals('제주특별자치도')">'제주'</when>
+				<when test="mb_sido.equals('세종특별자치시')">'세종'</when>
+				<otherwise>#{mb_sido}</otherwise></choose>
+				,#{mb_sigungu},#{mb_postcode},#{mb_addr_default},#{mb_addr_detail})
+   		</insert>
+   		
+   		<select id="doubleCheckId" parameterType="String" resultType="String">
+			SELECT mb_id FROM my_member WHERE mb_id= #{chkId}
+		</select>
+		
+		<select id="doubleCheckEmail" parameterType="String" resultType="String">
+			SELECT mb_email FROM my_member WHERE mb_email = #{chkEmail}
+		</select>
+		
+		<select id="login" resultType="String">
+			SELECT mb_id FROM my_member WHERE mb_id = #{param1} AND mb_pw=#{param2}
+		</select>
+   		
+   </mapper>
